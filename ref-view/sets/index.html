@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <!-- css  -->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link href="../css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+      <link href="../css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+      <title>Reference Platform</title>
+    </head>
+
+    <body>
+      <nav class="white" role="navigation">
+        <div class="nav-wrapper container">
+          <a id="logo-container" href="http://0.0.0.0:4000" class="teal-text text-lighten-2">Reference</a>
+        </div>
+      </nav>
+
+
+      <div class="row" id="sets-box">
+
+      </div>
+      <br/>
+
+      <div class="fixed-action-btn vertical" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large red" href="http://0.0.0.0:4100/ref/v0.1/set/upload">
+          <i class="large material-icons tooltipped" data-position="left" data-delay="50" data-tooltip="add">playlist_add</i>
+        </a>
+      </div>
+
+      <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script type="text/javascript" src="../js/materialize.min.js"></script>
+
+      <script type="text/javascript">
+        $(document).ready(function(){
+            $('.tooltipped').tooltip({delay: 50});
+            home_sets();
+            var param = window.location.search.substring(1);
+            var parts = param.split("=");
+            if(parts[0] == "result"){
+                if(parts[1] == "success"){
+                  Materialize.toast('Success!', 4000)
+                }else{
+                  Materialize.toast('Failure!', 4000)
+                }
+            }else if(parts[0] == "reload"){
+               window.location.replace("./");
+            }
+        });
+        function load_set(set_id, filename, status)
+        {
+          var set_content = "<div class=\"card col s4\">";
+          set_content += "<div class=\"card-image waves-effect waves-block waves-light\" id=\""+set_id+"\"><img class=\"activator\" src=\"http://0.0.0.0:4100/ref/v0.1/plot/set/"+set_id+"\" height=\"400px\" width=\"400px\"></div>";
+          set_content += "<div class=\"card-content\">";
+          set_content += "<span class=\"card-title activator grey-text text-darken-4\">"+filename+"</span>";
+
+          set_content += "<div class=\"row\"><div class=\"col s3\"><p><a href=\"http://0.0.0.0:4100/ref/v0.1/set/download/"+set_id+"\">Download</a></p></div>";
+          set_content += "<div class=\"row\"><div class=\"col s3\"><p><a href=\"http://0.0.0.0:4100/ref/v0.1/set/delete/"+set_id+"\">Delete</a></p></div>";
+          set_content += "<div class=\"row\"><div class=\"col s3\"><p><a href=\"http://0.0.0.0:4100/ref/v0.1/set/change/"+set_id+"\">Overwrite</a></p></div>";
+          if (status == "excluded"){
+            set_content += "<div class=\"col s3\"><p><a href=\"http://0.0.0.0:4100/ref/v0.1/home/set/include/"+set_id+"\">Include</a></p></div></div>";
+            set_content += "<span class=\"red-text text-darken-2\">This set is excluded.</p>";
+          }else{
+            set_content += "<div class=\"col s3\"><p><a href=\"http://0.0.0.0:4100/ref/v0.1/home/set/exclude/"+set_id+"\">Exclude</a></p></div></div>";
+            set_content += "<span class=\"green-text text-darken-2\">This set is included.</span>";
+          }
+
+          set_content += "</div>";
+          set_content += "</div>";
+
+
+          document.getElementById("sets-box").innerHTML += set_content;
+        }
+
+        function home_sets()
+        {
+          var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+          console.log(this.session);
+          xmlhttp.open("GET", "http://0.0.0.0:4100/ref/v0.1/home/sets");
+          xmlhttp.send();
+          xmlhttp.onreadystatechange=function()
+          {
+              console.log(xmlhttp.responseText);
+              if ((xmlhttp.status >= 200 && xmlhttp.status <= 300) || xmlhttp.status == 304) {
+                  console.log(xmlhttp.responseText);
+                  var response = JSON.parse(xmlhttp.responseText);
+                  var sets = response['content'];
+                  console.log(sets);
+                  document.getElementById("sets-box").innerHTML = "";
+                  for(var i = 0; i < sets.length; i++){
+                    set = sets[i];
+                    load_set(set['id'], set['filename'], set['status']);
+                  }
+              } else {
+                  console.log("Cannot reach core!");
+              }
+          }
+        }
+
+
+      </script>
+    </body>
+  </html>

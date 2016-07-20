@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <!-- css  -->
+      <link href="css/icon.css" rel="stylesheet">
+      <link href="css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+      <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+      <title>Reference Platform</title>
+    </head>
+
+    <body>
+      <nav class="white" role="navigation">
+        <div class="nav-wrapper container">
+          <a id="logo-container" href="./" class="teal-text text-lighten-2">Reference</a>
+        </div>
+      </nav>
+
+      <div id="index-banner" class="parallax-container">
+        <div class="section no-pad-bot">
+          <div class="container">
+            <div class="row center">
+              <div class="card">
+                <div class="card-image">
+                  <img id="reference-graph" src="http://0.0.0.0:4100/ref/v0.1/home">
+                </div>
+                <!-- <div class="progress" id="update-progress">
+                    <div class="indeterminate"></div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- To be removed in production -->
+      <div class="container center">
+        <a class="waves-effect waves-light btn" href="http://0.0.0.0:4100/ref/v0.1/home/reference/next">Build Reference</a>
+      </div>
+      <br/>
+
+      <div class="fixed-action-btn vertical" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large red">
+          <i class="large material-icons tooltipped" data-position="left" data-delay="50" data-tooltip="menu">work</i>
+        </a>
+        <ul>
+          <li class="tooltipped" data-position="left" data-delay="50" data-tooltip="data sets"><a class="btn-floating red" href="./sets"><i class="material-icons">insert_chart</i></a></li>
+          <!-- <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li> -->
+          <li class="tooltipped" data-position="left" data-delay="50" data-tooltip="evaluate data set"><a href="http://0.0.0.0:4100/ref/v0.1/home/reference/evaluate" class="btn-floating green"><i class="material-icons">done</i></a></li>
+          <li class="tooltipped" data-position="left" data-delay="50" data-tooltip="infos"><a class="btn-floating blue"><i class="material-icons">live_help</i></a></li>
+        </ul>
+      </div>
+
+      <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+      <script type="text/javascript" src="js/materialize.min.js"></script>
+
+      <script type="text/javascript">
+        function home_aliq1()
+        {
+            background = document.getElementById('reference-graph');
+            background.src = "http://0.0.0.0:4100/ref/v0.1/home/aliq1";
+        }
+
+        function home_aliq2()
+        {
+            background = document.getElementById('reference-graph');
+            background.src = "http://0.0.0.0:4100/ref/v0.1/home/aliq2";
+        }
+
+      </script>
+    </body>
+  </html>
