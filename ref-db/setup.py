@@ -4,9 +4,6 @@ import subprocess
 from setuptools import setup, find_packages
 import os
 
-with open('requirements.txt') as f:
-    required = f.read().splitlines()
-
 def git_version():
     def _minimal_ext_cmd(cmd):
         # construct minimal environment
@@ -42,7 +39,6 @@ def getVersion(version, release=False):
 
 setup(name='refdb',
       version=getVersion('alpha-0.1', release=False),
-      install_requires=required,
       description='Package for Reference Case Database',
       author='Yannick Congo',
       author_email='yannick.congo@gmail.com',

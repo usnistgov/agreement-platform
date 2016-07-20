@@ -41,7 +41,8 @@ def home():
                 if file_buffer != None:
                     return fk.send_file(file_buffer, attachment_filename=filename, mimetype='image/png')
                 else:
-                    return core_response(404, 'Request suggested an empty response', 'Unable to find this file.')
+                    return fk.redirect('http://0.0.0.0:4000/background1.jpg')
+                    # return core_response(404, 'Request suggested an empty response', 'Unable to find this file.')
         else:
             return core_response(204, 'Nothing done', 'Could not find this reference.')
     else:

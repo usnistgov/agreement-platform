@@ -4,7 +4,7 @@ To setup this platform we recommend installing an environment management
 system. For this purpose we installed [anaconda](https://www.continuum.io/downloads). Then create and load an
 environment where we will install all the paltform dependencies.
 
-    $ conda create -n dft-crossfilter python=2.7 anaconda
+    $ conda create -n agree-plt python=2.7 anaconda
 
 We recommand that you have three terminal windows to run these following
 sections. Each will producing a trace in the terminal that you might want
@@ -17,56 +17,45 @@ should be run after activating the environment we just created.
 You will have to build the database models and run a mongodb instance.
 Note that if you have an instance running already you just need the
 database models. In case you don't have one you need to get the absolute
-path to the data folder in benchmark-db. This is required for storing
+path to the data folder in ref-production. This is required for storing
 the database file and mongod only takes absolutepaths.
 
-    $ source activate dft-crossfilter
-    $ cd dft-crossfilter/benchmark-db
+    $ source activate agree-plt
+    $ cd agreement-platform/ref-db
     $ pip install -r requirements.txt
     $ python setup.py install
-    $ mkdir data
-    $ conda install mongodb
-    $ pwd -> get absolute path to data folder
-    $ python dbhandle.py --run --dbpath absolute_path_to/dft-crossfilter/benchmark-db/data
+
+Go to [Mongodb](https://docs.mongodb.com/manual/installation/) and install
+it on your system. Then start it. In ubuntu you can do so by:
+
+    $ sudo service mongod start
 
 At this point you should have a mongodb instance running.
 
-## The api setup
+## The core rest api setup
 
 After starting the database, we now need to install the api dependencies.
 Then run it.
 
-    $ source activate dft-crossfilter
-    $ cd dtf-crossfilter/benchmark-api
+    $ source activate agree-plt
+    $ cd agreement-platform/ref-core
     $ pip install -r requirements.txt
-    $ python run.py --host 0.0.0.0 --port 7000
+    $ python run.py --host 0.0.0.0 --port 4100
 
-In a browser go to [API data entry](http://0.0.0.0:7000/bench/push/csv). 
-This is the api frontend for uploading the dft data. Click on 'Choose File'
-and navigate to: dft-crossfilter/benchmark/data/francesca_data_full.csv.
-This will push this dft data set into the mongodb database 'benchmark-production'.
+## frontend view
 
-## bokeh setup
+Now that you have the database instance up and running and the core REST
+service connected to the database and exposing its endpoints we can stand
+the frontend instance.
+To do so you will need to install jekyll. Goto [Jekyll Installation](https://jekyllrb.com/docs/installation/).
+When done installing:
 
-At this point you are set for the data access part. For the visualizatio part
-you will have to build this modified bokeh snapshot. You will need to have gulp
-installed. When asked, select the full install with the option:
-1) build and install fresh BokehJS
+    $ cd agreement-platform/ref-view
+    $ sudo jekyll serve --watch --port 4000 --host 0.0.0.0
 
-    $ source activate dft-crossfilter
-    $ cd dtf-crossfilter/bokeh/bokehjs/
-    $ conda install -c nodejs
-    $ sudo apt-get install npm node
-    $ sudo apt-get install nodejs-legacy
-    $ sudo gulp build
-    $ sudo npm install
-    $ cd ..
-    $ sudo python setup.py install --build_js
-    $ cd ..
-If an error occurs we recommand you removing bokehjs/nodes_modules and bokehjs/build.
-Now that we have bokeh built with the crossfilter module we can now run our
-bokeh visualization server:
-
-    $ python bokeh/bokeh-server --script server.py
-
-Finally, in a browser go to: [Dft-Crossfilter Frontend](http://127.0.0.1:5006/bokeh/benchmark/).
+At this point you should have a bare instance running. Go to [Instance](http://0.0.0.0:4000/).
+This instance has no data and no reference mean. To add some datasets you will have to go
+to the sets and upload some data sets. Then include or exclude the datasets to be considered
+for the agreement mean reference and go back to the home page by clicking on Reference
+in the top banner. Then click on 'Build reference'. The fake image should then be replaced
+by a plot of the mean plot and some other information.
